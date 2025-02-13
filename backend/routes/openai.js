@@ -1,6 +1,8 @@
 import OpenAI from "openai";
-
+import dotenv from "dotenv";
 import { Router } from "express";
+
+dotenv.config();
 
 import {
   trackSuggestionPrompt,
@@ -10,8 +12,7 @@ import {
 const router = Router();
 
 const openai = new OpenAI({
-  apiKey:
-    "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",
+  apiKey: process.env.OPEN_AI_KEY,
 });
 
 router.post("/get-track-suggestion", async (req, res) => {

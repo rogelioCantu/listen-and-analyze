@@ -16,6 +16,7 @@ router.get("/top-ten-artists", async (req, res) => {
           name: artist.name,
           genre: artist.genres.join(),
           artistUrl: artist.external_urls.spotify,
+          artistImageUrl: artist.images[0].url,
         };
       });
       res.json(artists);
@@ -31,15 +32,12 @@ router.get("/top-ten-artists", async (req, res) => {
 router.get("/public-playlists", async (req, res) => {
   try {
     if (req.isAuthenticated()) {
-      console.log(req.query.userId);
       const response = await axios.get(
         `https://api.spotify.com/v1/users/${req.query.userId}/playlists?limit=10`,
         { headers: { Authorization: `Bearer ${req.session.user.accessToken}` } }
       );
-      console.log(response);
       const playlists = response.data.items.map((item) => {
         const playlist = item;
-        console.log(playlist);
         return {
           name: playlist.name,
           owner: playlist.owner.display_name,
@@ -65,10 +63,12 @@ router.get("/top-ten-tracks", async (req, res) => {
       );
       console.log(response.data);
       const tracks = response.data.items.map((item) => {
+        console.log(item.album.images[0].url);
         return {
           name: item.name,
           artists: item.artists.map((artist) => artist.name).join(", "),
           trackUrl: item.external_urls.spotify,
+          albumImageUrl: item.album.images[0].url,
         };
       });
       res.json(tracks);

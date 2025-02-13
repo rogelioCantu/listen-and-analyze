@@ -1,5 +1,6 @@
 import axios from "axios";
 import Artist from "../interfaces/ArtistInterface";
+import Track from "../interfaces/TrackInterface";
 
 const axiosInstance = axios.create({
   baseURL: "http://localhost:5000", // Set a base URL for all requests
@@ -26,6 +27,22 @@ export const fetchArtistSuggestion = async ({
     return response.data;
   } catch (error) {
     console.error("Error fetching albums:", error);
+    throw error;
+  }
+};
+
+export const fetchTrackSuggestion = async ({ tracks }: { tracks: Track[] }) => {
+  const trackList = {
+    tra: tracks?.map((track) => track.name).join(", "),
+  };
+  try {
+    const response = await axiosInstance.post(
+      "/openai/get-track-suggestion",
+      trackList
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error getting track suggestion:", error);
     throw error;
   }
 };

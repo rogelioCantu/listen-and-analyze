@@ -3,7 +3,7 @@ import User from "../interfaces/UserInterface";
 // import Track from "../interfaces/TrackInterface";
 // import Playlist from "../interfaces/PlaylistInterface";
 // import Artist from "../interfaces/ArtistInterface";
-import TrackCard from "../components/TrackCard";
+import TrackCard from "../components/Cards/TrackCard";
 
 import { useData } from "../data/DataContext";
 

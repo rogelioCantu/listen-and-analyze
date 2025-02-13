@@ -1,12 +1,20 @@
 import User from "../interfaces/UserInterface";
 import Artist from "../interfaces/ArtistInterface";
+import Track from "../interfaces/TrackInterface";
+import { TrackCarousel } from "../components/Carousels/TrackCarousel";
+import { ArtistCarousel } from "../components/Carousels/ArtistCarousel";
+import TrackCard from "../components/Cards/TrackCard";
+import ArtistCard from "../components/Cards/ArtistCard";
 import { useData } from "../data/DataContext";
-import { fetchArtistSuggestion } from "../data/DataFetcher";
+import {
+  fetchArtistSuggestion,
+  fetchTrackSuggestion,
+} from "../data/DataFetcher";
 import { useState } from "react";
-import axios from "axios";
 
 const TopListening = ({ user }: { user: User }) => {
   const { tracks, artists } = useData();
+  const [trackData, setTrackData] = useState<Track | null>(null);
   const [artistSuggestion, setArtistSuggestion] = useState("");
 
   const [trackSuggestion, setTrackSuggestion] = useState("");
@@ -21,34 +29,10 @@ const TopListening = ({ user }: { user: User }) => {
       });
   };
 
-  // const getArtistSuggestion = async () => {
-  //   const artistList = {
-  //     art: artists?.map((artist) => artist.name).join(", "),
-  //   };
-  //   axios
-  //     .post("http://localhost:5000/openai/get-artist-suggestion", artistList, {
-  //       withCredentials: true,
-  //       headers: { "Content-Type": "application/json" },
-  //     })
-  //     .then((res) => {
-  //       setArtistSuggestion(res.data);
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //     });
-  // };
-
   const getTrackSuggestion = async () => {
-    const trackList = {
-      tra: tracks?.map((track) => track.name).join(", "),
-    };
-    axios
-      .post("http://localhost:5000/openai/get-track-suggestion", trackList, {
-        withCredentials: true,
-        headers: { "Content-Type": "application/json" },
-      })
+    fetchTrackSuggestion({ tracks: tracks as Track[] })
       .then((res) => {
-        setTrackSuggestion(res.data);
+        setTrackSuggestion(res);
       })
       .catch((err) => {
         console.log(err);
@@ -57,39 +41,45 @@ const TopListening = ({ user }: { user: User }) => {
 
   return (
     <div>
-      <h1>{user.profile.id}</h1>
-      <div>
-        <h2>Top Tracks</h2>
-        {tracks ? (
-          <div>
-            <ul>
-              {tracks.map((track, index) => (
-                <li key={index}>{track.name}</li> // Render your track data
-              ))}
-            </ul>
-            <button onClick={getTrackSuggestion}>Get Track Suggestion</button>
-            {trackSuggestion == "" ? <p></p> : <p>{trackSuggestion}</p>}
-          </div>
-        ) : (
-          <p>Loading tracks...</p>
-        )}
-      </div>
+      <div className="flex justify-between bg-gradient-to-r from-red-500 to-yelow-500">
+        <div className="p-10 w-full md:w-1/2">
+          {tracks ? (
+            <div>
+              <TrackCarousel tracks={tracks} />
+            </div>
+          ) : (
+            <p>Loading tracks...</p>
+          )}
+        </div>
 
-      <div>
-        <h2>Top Artists</h2>
-        {artists ? (
-          <div>
-            <ul>
-              {artists.map((artist, index) => (
-                <li key={index}>{artist.name}</li> // Render your album data
-              ))}
-            </ul>
-            <button onClick={getArtistSuggestion}>Get Artist Suggestion</button>
-            {artistSuggestion == "" ? <p></p> : <p>{artistSuggestion}</p>}
-          </div>
-        ) : (
-          <p>Loading albums...</p>
-        )}
+        <div className="p-10 w-full md:w-1/2">
+          {artists ? (
+            <div>
+              <ArtistCarousel artists={artists} />
+            </div>
+          ) : (
+            <p>Loading albums...</p>
+          )}
+        </div>
+      </div>
+      <div className="bg-gradient-to-r from-blue-500 to-teal-500 text-white p-10">
+        <h2 className="flex justify-center text-2xl font-bold mb-4">
+          Explore More
+        </h2>
+        <div className="flex justify-between space-x-4 px-10">
+          <button
+            onClick={getTrackSuggestion}
+            className="bg-blue-700 hover:bg-blue-800 text-white px-6 py-2 rounded-full"
+          >
+            Get a track suggestion
+          </button>
+          <button
+            onClick={getArtistSuggestion}
+            className="bg-teal-700 hover:bg-teal-800 text-white px-6 py-2 rounded-full"
+          >
+            Get a artist suggestion
+          </button>
+        </div>
       </div>
     </div>
   );

@@ -6,9 +6,14 @@ import userRoutes from "./routes/user.js";
 import openAiRoutes from "./routes/openai.js";
 import cors from "cors";
 
-var client_id = "c223249c33ba413ca751dd03a6f92498"; // your clientId
-var client_secret = "820d895e9a164a68a8583c2f94ec5c22"; // Your secret
-var redirect_uri = "http://localhost:5000/auth/callback"; // Your redirect uri
+import dotenv from "dotenv";
+
+// Load environment variables from the .env file
+dotenv.config();
+
+var client_id = process.env.CLIENT_ID; // your clientId
+var client_secret = process.env.CLIENT_SECRET; // Your secret
+var redirect_uri = process.env.REDIRECT_URI; // Your redirect uri
 
 const corsOptions = {
   origin: "http://localhost:5173", // React frontend URL
