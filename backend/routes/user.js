@@ -42,6 +42,7 @@ router.get("/public-playlists", async (req, res) => {
           name: playlist.name,
           owner: playlist.owner.display_name,
           playlistUrl: playlist.external_urls.spotify,
+          playlistImageUrl: playlist.images[0].url,
         };
       });
       res.json(playlists);
@@ -63,7 +64,6 @@ router.get("/top-ten-tracks", async (req, res) => {
       );
       console.log(response.data);
       const tracks = response.data.items.map((item) => {
-        console.log(item.album.images[0].url);
         return {
           name: item.name,
           artists: item.artists.map((artist) => artist.name).join(", "),

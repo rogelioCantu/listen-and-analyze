@@ -40,9 +40,29 @@ export const fetchTrackSuggestion = async ({ tracks }: { tracks: Track[] }) => {
       "/openai/get-track-suggestion",
       trackList
     );
-    return response.data;
+    console.log(response);
+    const item = response.data;
+    console.log(item);
+    console.log(JSON.stringify(item));
+    return {
+      name: item.name,
+      artists: item.artists,
+      trackUrl: item.trackUrl,
+      albumImageUrl: item.albumImageUrl,
+    };
   } catch (error) {
     console.error("Error getting track suggestion:", error);
     throw error;
   }
 };
+
+// const tracks = response.data.items.map((item) => {
+//   console.log(item.album.images[0].url);
+//   return {
+//     name: item.name,
+//     artists: item.artists.map((artist) => artist.name).join(", "),
+//     trackUrl: item.external_urls.spotify,
+//     albumImageUrl: item.album.images[0].url,
+//   };
+// });
+// res.json(tracks);

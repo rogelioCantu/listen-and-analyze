@@ -29,8 +29,9 @@ router.post("/get-track-suggestion", async (req, res) => {
           },
         ],
       });
-      console.log(completion.choices[0].message);
-      res.json(completion.choices[0].message.content);
+      console.log(completion.choices[0].message.content);
+      const item = completion.choices[0].message.content;
+      res.json(item);
     } else {
       res.status(401).send("Unauthorized");
     }

@@ -1,4 +1,4 @@
-import Track from "../../interfaces/TrackInterface";
+import Playlist from "../../interfaces/PlaylistInterface";
 import {
   Card,
   CardHeader,
@@ -6,8 +6,7 @@ import {
   Typography,
 } from "@material-tailwind/react";
 
-const TrackCard = ({ track }: { track: Track }) => {
-  console.log(track);
+const PlaylistCard = ({ playlist }: { playlist: Playlist }) => {
   return (
     <Card
       placeholder=""
@@ -25,7 +24,7 @@ const TrackCard = ({ track }: { track: Track }) => {
         color="transparent"
         className="absolute inset-0 m-0 h-full w-full rounded-none bg-cover bg-center"
         style={{
-          backgroundImage: `url(${track.albumImageUrl})`,
+          backgroundImage: `url(${playlist.playlistImageUrl})`,
         }}
       >
         <div className="to-bg-black-10 absolute inset-0 h-full w-full bg-gradient-to-t from-black/80 via-black/50" />
@@ -44,7 +43,7 @@ const TrackCard = ({ track }: { track: Track }) => {
           color="white"
           className="mb-6 font-medium leading-[1.5]"
         >
-          {track.name}
+          {playlist.name}
         </Typography>
         <Typography
           placeholder=""
@@ -53,7 +52,7 @@ const TrackCard = ({ track }: { track: Track }) => {
           variant="h5"
           className="mb-4 text-gray-400"
         >
-          {track.artists}
+          {playlist.owner}
         </Typography>
         <Typography
           placeholder=""
@@ -62,7 +61,11 @@ const TrackCard = ({ track }: { track: Track }) => {
           variant="h6"
           className="mb-4 text-gray-400"
         >
-          <a href={track.trackUrl} target="_blank" rel="noopener noreferrer">
+          <a
+            href={playlist.playlistUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             Listen on spotify
           </a>
         </Typography>
@@ -71,4 +74,4 @@ const TrackCard = ({ track }: { track: Track }) => {
   );
 };
 
-export default TrackCard;
+export default PlaylistCard;
